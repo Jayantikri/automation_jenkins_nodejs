@@ -1,7 +1,6 @@
 pipeline {
     agent any
     environment {
- 
         DOCKERHUB_CREDENTIALS = credentials('dockerhub_cred')
     }
     
@@ -12,22 +11,17 @@ pipeline {
             }
         }
 
-            stage('build') {
+        stage('build') {
             steps {
-                   
-                    sh "docker build -t jaya91/my_react-vite-app:1.0.${BUILD_NUMBER}  ." 
-                    sh 'docker images'
-                
+                sh "docker build -t jaya91/my_react-vite-app:1.0.${BUILD_NUMBER}  ." 
+                sh 'docker images'
             }
         }
         
         stage('Deploy our image') {
             steps {
-                
-                    // Login to Docker Hub using credentials
-withCredentials([usernamePassword(credentialsId: 'dockerhub_cred', passwordVariable: 'password', usernameVariable: 'username')]) {
-    // some block
-
+                // Login to Docker Hub using credentials
+                withCredentials([usernamePassword(credentialsId: 'dockerhub_cred', passwordVariable: 'password', usernameVariable: 'username')]) {
                     sh "docker login -u $username -p $password"
                     
                     // Push the Docker image to Docker Hub
@@ -35,8 +29,7 @@ withCredentials([usernamePassword(credentialsId: 'dockerhub_cred', passwordVaria
                     
                     // Run the Docker container
                     sh "docker rm -f react_app || true" // Remove the container if it exists
-                    sh "docker run -d --name react_app -p 3000:3000 --host  jaya91/my_react-vite-app:1.0.${BUILD_NUMBER}"
-"
+                    sh "docker run -d --name react_app -p 3000:3000 --host jaya91/my_react-vite-app:1.0.${BUILD_NUMBER}"
                 }
             }
         }
