@@ -29,7 +29,7 @@ pipeline {
                     
                     // Run the Docker container
                     sh "docker rm -f react_app || true" // Remove the container if it exists
-                    sh "docker run -d --name react_app -p 3000:5173 jaya91/my_react-vite-app:1.0.${BUILD_NUMBER}"
+                    sh "docker run -d --name react_app -p 3000:5173 --host 0.0.0.0 jaya91/my_react-vite-app:1.0.${BUILD_NUMBER}"
                 }
             }
         }
