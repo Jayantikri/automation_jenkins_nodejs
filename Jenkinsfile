@@ -35,7 +35,7 @@ withCredentials([usernamePassword(credentialsId: 'dockerhub_cred', passwordVaria
                     
                     // Run the Docker container
                     sh "docker rm -f react_app || true" // Remove the container if it exists
-                    sh "docker run -itd --name react_app -p 3000:80 --host jaya91/my_react-vite-app:1.0.${BUILD_NUMBER}"
+                    sh "docker run -d --name react_app -p 3000:80  jaya91/my_react-vite-app:1.0.${BUILD_NUMBER}"
                 }
             }
         }
